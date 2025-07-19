@@ -1,6 +1,6 @@
+import { readMultipleDataFiles } from '@/utils/read-file';
 import { NextResponse } from 'next/server';
-import { readMultipleDataFiles } from '@/lib/fileUtils';
-import type { FinancialData } from '@/lib/types';
+import { FinancialData } from '../../types/dashboard';
 
 type AllDashboardData = {
   monthly: FinancialData;

@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
-import { readDataFile } from '@/lib/fileUtils';
-import type { ReportApiResponse } from '@/lib/types';
+import { readDataFile } from '@/utils/read-file';
+import { ReportApiResponse } from '../types/reports';
 
 export async function GET(): Promise<
   NextResponse<ReportApiResponse | { error: string }>
