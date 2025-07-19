@@ -1,0 +1,245 @@
+{
+  "reportData": {
+    "title": "Business Financial Report",
+    "period": "2024-2025",
+    "sections": [
+      {
+        "id": "financial",
+        "title": "Financial Performance",
+        "description": "Comprehensive financial analysis and key performance indicators",
+        "items": [
+          {
+            "id": "cash-flow",
+            "title": "Cash Flow Analysis",
+            "type": "chart",
+            "description": "Analysis of cash flow from operations and investments",
+            "data": {
+              "operations": {
+                "2024": 3374053,
+                "2025": 0
+              },
+              "investment": {
+                "2024": 0,
+                "2025": 0
+              }
+            }
+          },
+          {
+            "id": "revenue-breakdown",
+            "title": "Revenue Breakdown",
+            "type": "pie",
+            "description": "Analysis of revenue sources by category",
+            "data": [
+              { "name": "Design Income", "value": 99828, "percentage": 62.8 },
+              {
+                "name": "Small Business Income",
+                "value": 112569,
+                "percentage": 70.8
+              },
+              {
+                "name": "BLABLA (deleted)",
+                "value": 23332,
+                "percentage": 14.7
+              },
+              {
+                "name": "Landscaping Services",
+                "value": 10797.5,
+                "percentage": 6.8
+              },
+              {
+                "name": "Fountains and Garden Lighting",
+                "value": 10000,
+                "percentage": 6.3
+              },
+              {
+                "name": "Plants and Soil",
+                "value": 2220.72,
+                "percentage": 1.4
+              },
+              {
+                "name": "Sales of Product Income",
+                "value": 912.75,
+                "percentage": 0.6
+              },
+              { "name": "Services", "value": 503.55, "percentage": 0.3 },
+              { "name": "Installation", "value": 250, "percentage": 0.2 },
+              {
+                "name": "Uncategorized Income",
+                "value": 255,
+                "percentage": 0.2
+              }
+            ]
+          },
+          {
+            "id": "expense-analysis",
+            "title": "Expense Analysis",
+            "type": "donut",
+            "description": "Breakdown of business expenses by category",
+            "data": [
+              { "name": "Rent or Lease", "value": 900, "percentage": 2.5 },
+              { "name": "Equipment Repairs", "value": 755, "percentage": 2.1 },
+              { "name": "Contractor", "value": 750, "percentage": 2.1 },
+              { "name": "Accounting", "value": 390, "percentage": 1.1 },
+              { "name": "Insurance", "value": 241.23, "percentage": 0.7 },
+              {
+                "name": "Decks and Patios",
+                "value": 234.04,
+                "percentage": 0.7
+              },
+              { "name": "Fuel", "value": 232.85, "percentage": 0.6 },
+              {
+                "name": "Sprinklers and Drip Systems",
+                "value": 215.66,
+                "percentage": 0.6
+              },
+              {
+                "name": "Maintenance and Repair",
+                "value": 185,
+                "percentage": 0.5
+              },
+              {
+                "name": "Gas and Electric",
+                "value": 114.09,
+                "percentage": 0.3
+              },
+              { "name": "Equipment Rental", "value": 112, "percentage": 0.3 },
+              { "name": "Plants and Soil", "value": 105.95, "percentage": 0.3 },
+              { "name": "Lawyer", "value": 100, "percentage": 0.3 },
+              {
+                "name": "Legal & Professional Fees",
+                "value": 75,
+                "percentage": 0.2
+              },
+              { "name": "Advertising", "value": 74.86, "percentage": 0.2 },
+              { "name": "Telephone", "value": 74.36, "percentage": 0.2 },
+              { "name": "Job Expenses", "value": 46.98, "percentage": 0.1 },
+              {
+                "name": "Meals and Entertainment",
+                "value": 28.49,
+                "percentage": 0.1
+              },
+              { "name": "Office Expenses", "value": 18.08, "percentage": 0.1 }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "assets",
+        "title": "Asset Management",
+        "description": "Analysis of company assets and liquidity",
+        "items": [
+          {
+            "id": "cash-assets",
+            "title": "Cash and Bank Assets",
+            "type": "line",
+            "description": "Tracking of cash positions across different accounts",
+            "data": [
+              { "name": "Cash", "value": 3472530, "percentage": 99.4 },
+              { "name": "Fixed Assets", "value": 13495, "percentage": 0.4 },
+              {
+                "name": "Other Current Assets",
+                "value": 2397.77,
+                "percentage": 0.1
+              },
+              { "name": "Checking", "value": 2385, "percentage": 0.1 },
+              { "name": "Savings", "value": 800, "percentage": 0.0 }
+            ]
+          },
+          {
+            "id": "profitability",
+            "title": "Profitability Analysis",
+            "type": "bar",
+            "description": "Analysis of profit and loss components",
+            "data": {
+              "revenues": 3355528,
+              "expenses": 15876,
+              "costOfSales": -500,
+              "netIncome": 3370904,
+              "grossMargin": 99.985,
+              "netMargin": 100.46
+            }
+          }
+        ]
+      },
+      {
+        "id": "kpis",
+        "title": "Key Performance Indicators",
+        "description": "Critical business metrics and performance indicators",
+        "items": [
+          {
+            "id": "financial-kpis",
+            "title": "Financial KPIs",
+            "type": "metric",
+            "description": "Core financial performance metrics",
+            "data": [
+              {
+                "name": "Cash at Bank",
+                "value": 19394.77,
+                "unit": "$",
+                "change": 5.68,
+                "trend": "up",
+                "period": "Feb 2023"
+              },
+              {
+                "name": "Burn Rate",
+                "value": -121.45,
+                "unit": "$",
+                "change": null,
+                "trend": "neutral",
+                "period": "Feb 2023"
+              },
+              {
+                "name": "Runway",
+                "value": 159.69,
+                "unit": "months",
+                "change": null,
+                "trend": "neutral",
+                "period": "Current"
+              },
+              {
+                "name": "Cash from Operations",
+                "value": -121.45,
+                "unit": "$",
+                "change": -104.32,
+                "trend": "down",
+                "period": "Feb 2023"
+              }
+            ]
+          },
+          {
+            "id": "growth-metrics",
+            "title": "Growth Metrics",
+            "type": "metric",
+            "description": "Year-over-year growth analysis",
+            "data": [
+              {
+                "name": "Revenue Growth",
+                "value": 162356.52,
+                "unit": "$",
+                "change": 8298.11,
+                "trend": "up",
+                "period": "YoY"
+              },
+              {
+                "name": "Gross Profit Growth",
+                "value": 62079.52,
+                "unit": "$",
+                "change": 3111.15,
+                "trend": "up",
+                "period": "YoY"
+              },
+              {
+                "name": "Net Income Growth",
+                "value": 99878.97,
+                "unit": "$",
+                "change": 19542.27,
+                "trend": "up",
+                "period": "YoY"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
