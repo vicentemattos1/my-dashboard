@@ -70,7 +70,7 @@ export function DashboardChart({ data, isLoading }: DashboardChartProps) {
   const period = `${data?.period[0].toUpperCase()}${data?.period.slice(1, data.period.length)}`;
   if (isLoading) {
     return (
-      <div className="space-y-6">
+      <div className="space-y-6" data-testid="dashboard-loading">
         <div className="grid grid-cols-2 lg:grid-cols-3 gap-1.5">
           <Card>
             <CardHeader>
@@ -114,7 +114,7 @@ export function DashboardChart({ data, isLoading }: DashboardChartProps) {
       </div>
     );
   }
-
+  console.log(data);
   if (!data) {
     return (
       <div className="text-center text-muted-foreground">No data available</div>
@@ -127,7 +127,7 @@ export function DashboardChart({ data, isLoading }: DashboardChartProps) {
         <Card>
           <CardHeader className="px-3 md:px-6 md:pb-2">
             <CardDescription>Total Revenue</CardDescription>
-            <CardTitle className="md:text-2xl">
+            <CardTitle className="md:text-2xl" data-testid="revenue-value">
               ${data.kpiComparisons.revenue.value.toLocaleString()}
             </CardTitle>
             <PeriodComparisonIndicator
