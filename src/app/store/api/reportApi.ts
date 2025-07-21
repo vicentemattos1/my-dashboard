@@ -7,7 +7,7 @@ export const reportApi = createApi({
   tagTypes: ['ReportData', 'ReportData'],
   endpoints: (builder) => ({
     getAllReportData: builder.query<ReportApiResponse, void>({
-      query: () => 'report/all',
+      query: () => 'reports',
       providesTags: ['ReportData'],
     }),
   }),

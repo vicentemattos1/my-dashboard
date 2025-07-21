@@ -8,7 +8,10 @@ export const store = configureStore({
     [reportApi.reducerPath]: reportApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(dashboardApi.middleware),
+    getDefaultMiddleware().concat(
+      dashboardApi.middleware,
+      reportApi.middleware
+    ),
 });
 
 export type RootState = ReturnType<typeof store.getState>;
