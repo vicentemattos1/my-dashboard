@@ -1,10 +1,11 @@
 import { FinancialData } from '@/app/api/types/dashboard';
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { baseApi } from './baseApi';
 
-export const dashboardApi = createApi({
-  reducerPath: 'dashboardApi',
-  baseQuery: fetchBaseQuery({ baseUrl: '/api/' }),
-  tagTypes: ['DashboardData', 'ReportData'],
+const dashboardApiWithTags = baseApi.enhanceEndpoints({
+  addTagTypes: ['DashboardData'],
+});
+
+export const dashboardApi = dashboardApiWithTags.injectEndpoints({
   endpoints: (builder) => ({
     getMonthlyData: builder.query<FinancialData, void>({
       query: () => 'dashboard/monthly',
@@ -30,6 +31,7 @@ export const dashboardApi = createApi({
       providesTags: ['DashboardData'],
     }),
   }),
+  overrideExisting: false,
 });
 
 export const {

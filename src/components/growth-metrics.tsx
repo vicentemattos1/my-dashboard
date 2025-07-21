@@ -1,7 +1,7 @@
 import { cn } from '@/lib/utils';
 import { formatValue, formatChange } from '@/utils/format-utils';
 
-type GrowthMetricItem = {
+type GrowthMetricsItem = {
   change: number;
   name: string;
   period: string;
@@ -10,9 +10,9 @@ type GrowthMetricItem = {
   value: number;
 };
 
-type GrowthMetricsProps = {
-  data: GrowthMetricItem[];
-};
+interface GrowthMetricsProps {
+  data: GrowthMetricsItem[];
+}
 
 export function GrowthMetrics({ data }: GrowthMetricsProps) {
   if (!data || data.length === 0) {
@@ -30,13 +30,13 @@ export function GrowthMetrics({ data }: GrowthMetricsProps) {
           <div
             key={`${metric.name}-${index}`}
             className={cn(
-              'p-4 rounded-lg border',
+              'p-4 rounded-lg border transition-colors',
               metric.trend === 'up' &&
-                'bg-green-50 dark:bg-green-950 border-green-200 dark:border-green-800',
+                'bg-brand-cool/10 dark:bg-brand-cool/20 border-brand-cool/30 dark:border-brand-cool/40',
               metric.trend === 'down' &&
-                'bg-red-50 dark:bg-red-950 border-red-200 dark:border-red-800',
+                'bg-destructive/10 dark:bg-destructive/20 border-destructive/30 dark:border-destructive/40',
               metric.trend === 'neutral' &&
-                'bg-gray-50 dark:bg-gray-950 border-gray-200 dark:border-gray-800'
+                'bg-brand-warm/10 dark:bg-brand-warm/20 border-brand-warm/30 dark:border-brand-warm/40'
             )}
           >
             <div className="flex items-center justify-between">
@@ -62,11 +62,11 @@ export function GrowthMetrics({ data }: GrowthMetricsProps) {
                       className={cn(
                         'text-xl font-bold',
                         metric.trend === 'up' &&
-                          'text-green-700 dark:text-green-300',
+                          'text-brand-cool dark:text-brand-cool',
                         metric.trend === 'down' &&
-                          'text-red-700 dark:text-red-300',
+                          'text-destructive dark:text-destructive',
                         metric.trend === 'neutral' &&
-                          'text-gray-700 dark:text-gray-300'
+                          'text-brand-warm dark:text-brand-warm'
                       )}
                     >
                       {formatChange(metric.change, metric.unit)}

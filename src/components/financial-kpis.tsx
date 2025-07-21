@@ -13,9 +13,9 @@ type FinancialKPIItem = {
   value: number;
 };
 
-type FinancialKPIsProps = {
+interface FinancialKPIsProps {
   data: FinancialKPIItem[];
-};
+}
 
 export function FinancialKPIs({ data }: FinancialKPIsProps) {
   if (!data || data.length === 0) {
@@ -29,7 +29,10 @@ export function FinancialKPIs({ data }: FinancialKPIsProps) {
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
       {data.map((kpi, index) => (
-        <Card key={`${kpi.name}-${index}`} className="relative py-3">
+        <Card
+          key={`${kpi.name}-${index}`}
+          className="relative py-3 transition-colors hover:bg-brand-light/20"
+        >
           <CardHeader className="pb-2 pt-3">
             <div className="flex items-center justify-between">
               <CardTitle className="text-xs font-medium text-muted-foreground leading-tight">
@@ -52,10 +55,11 @@ export function FinancialKPIs({ data }: FinancialKPIsProps) {
                     className={cn(
                       'text-xs font-medium',
                       kpi.trend === 'up' &&
-                        'text-green-600 dark:text-green-400',
-                      kpi.trend === 'down' && 'text-red-600 dark:text-red-400',
+                        'text-brand-cool dark:text-brand-cool',
+                      kpi.trend === 'down' &&
+                        'text-destructive dark:text-destructive',
                       kpi.trend === 'neutral' &&
-                        'text-gray-600 dark:text-gray-400'
+                        'text-brand-warm dark:text-brand-warm'
                     )}
                   >
                     {formatChange(kpi.change, kpi.unit)}

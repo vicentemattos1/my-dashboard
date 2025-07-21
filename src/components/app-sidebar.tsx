@@ -33,7 +33,7 @@ export function AppSidebar() {
     <Sidebar>
       <SidebarHeader className="border-b border-sidebar-border">
         <div className="flex items-center gap-2 p-4">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-brand-warm text-brand-warm-foreground shadow-sm">
             <BarChart3 className="h-4 w-4" />
           </div>
           <div className="flex flex-col">
@@ -45,12 +45,17 @@ export function AppSidebar() {
 
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Navigation</SidebarGroupLabel>
+          <SidebarGroupLabel className="text-brand-neutral/70">
+            Navigation
+          </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
+                  <SidebarMenuButton
+                    asChild
+                    className="hover:bg-brand-light/50 data-[active=true]:bg-brand-warm/20 data-[active=true]:border-l-2 data-[active=true]:border-brand-warm"
+                  >
                     <a href={item.url}>
                       <item.icon />
                       <span>{item.title}</span>
@@ -63,16 +68,13 @@ export function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
 
-      <SidebarFooter className="border-t border-sidebar-border">
-        <div className="p-4">
-          <div className="flex items-center gap-2">
-            <div className="h-8 w-8 rounded-full bg-accent" />
-            <div className="flex flex-col">
-              <span className="text-sm font-medium">Admin User</span>
-              <span className="text-xs text-muted-foreground">
-                admin@dashboard.com
-              </span>
-            </div>
+      <SidebarFooter className="border-t border-sidebar-border/50">
+        <div className="p-2">
+          <div className="text-xs text-muted-foreground text-center">
+            <span className="inline-flex items-center gap-1">
+              <div className="w-2 h-2 rounded-full bg-brand-cool"></div>
+              Enhanced with custom colors
+            </span>
           </div>
         </div>
       </SidebarFooter>

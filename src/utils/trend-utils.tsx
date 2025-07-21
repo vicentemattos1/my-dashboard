@@ -15,10 +15,10 @@ export const getTrendIcon = (
 
   switch (trend) {
     case 'up':
-      return <TrendingUp className={`${iconSize} text-green-600`} />;
+      return <TrendingUp className={`${iconSize} text-brand-cool`} />;
     case 'down':
-      return <TrendingDown className={`${iconSize} text-red-600`} />;
+      return <TrendingDown className={`${iconSize} text-destructive`} />;
     default:
-      return <Minus className={`${iconSize} text-gray-600`} />;
+      return <Minus className={`${iconSize} text-brand-warm`} />;
   }
 };

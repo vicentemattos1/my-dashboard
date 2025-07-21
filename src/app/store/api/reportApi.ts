@@ -1,16 +1,18 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { baseApi } from './baseApi';
 import { ReportApiResponse } from '../types/report';
 
-export const reportApi = createApi({
-  reducerPath: 'reportApi',
-  baseQuery: fetchBaseQuery({ baseUrl: '/api/' }),
-  tagTypes: ['ReportData', 'ReportData'],
+const reportApiWithTags = baseApi.enhanceEndpoints({
+  addTagTypes: ['ReportData'],
+});
+
+export const reportApi = reportApiWithTags.injectEndpoints({
   endpoints: (builder) => ({
     getAllReportData: builder.query<ReportApiResponse, void>({
       query: () => 'reports',
       providesTags: ['ReportData'],
     }),
   }),
+  overrideExisting: false,
 });
 
 export const { useGetAllReportDataQuery } = reportApi;

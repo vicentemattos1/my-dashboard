@@ -41,12 +41,7 @@ export function PeriodComparisonIndicator({
 
   if (isNeutral) {
     return (
-      <div
-        className={cn(
-          'flex items-center gap-1 text-muted-foreground',
-          className
-        )}
-      >
+      <div className={cn('flex items-center gap-1 text-brand-warm', className)}>
         <span className="text-sm">No change {getPeriodLabel(prefix)}</span>
       </div>
     );
@@ -56,8 +51,8 @@ export function PeriodComparisonIndicator({
     <div
       className={cn(
         'flex items-center gap-1 text-sm font-medium',
-        isPositive && 'text-green-600',
-        isNegative && 'text-red-600',
+        isPositive && 'text-brand-cool',
+        isNegative && 'text-destructive',
         className
       )}
     >

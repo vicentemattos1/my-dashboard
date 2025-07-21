@@ -1,17 +1,14 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { dashboardApi } from './api/dashboardApi';
-import { reportApi } from './api/reportApi';
+import { baseApi } from './api/baseApi';
+import './api/dashboardApi';
+import './api/reportApi';
 
 export const store = configureStore({
   reducer: {
-    [dashboardApi.reducerPath]: dashboardApi.reducer,
-    [reportApi.reducerPath]: reportApi.reducer,
+    [baseApi.reducerPath]: baseApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(
-      dashboardApi.middleware,
-      reportApi.middleware
-    ),
+    getDefaultMiddleware().concat(baseApi.middleware),
 });
 
 export type RootState = ReturnType<typeof store.getState>;
