@@ -21,6 +21,15 @@ export type FinancialData = {
     topKPIs: Array<{
       name: string;
       value: number;
+      date?: string;
+      mOm?: number;
+      type?: string;
+    }>;
+    KPIs: Array<{
+      name: string;
+      value: number;
+      mom: number;
+      prefix: string;
     }>;
   };
 };

@@ -11,9 +11,51 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { RefreshCw, TrendingUp, TrendingDown, Minus } from 'lucide-react';
+import {
+  RefreshCw,
+  DollarSign,
+  PieChart,
+  BarChart3,
+  Target,
+  Building2,
+  TrendingUpIcon,
+} from 'lucide-react';
 import { toast } from 'sonner';
 import { useGetAllReportDataQuery } from '../store/api/reportApi';
+import { AnalysisTable } from '@/components/analysis-table';
+import { CashFlow } from '@/components/cash-flow-table';
+import { Profitability } from '@/components/profitability';
+import { FinancialKPIs } from '@/components/financial-kpis';
+import { GrowthMetrics } from '@/components/growth-metrics';
+
+const getSectionIcon = (sectionId: string) => {
+  switch (sectionId) {
+    case 'financial':
+      return <DollarSign className="h-5 w-5 text-green-600" />;
+    case 'assets':
+      return <Building2 className="h-5 w-5 text-blue-600" />;
+    case 'kpis':
+      return <Target className="h-5 w-5 text-purple-600" />;
+    default:
+      return <BarChart3 className="h-5 w-5 text-gray-600" />;
+  }
+};
+
+const getTypeIcon = (type: string) => {
+  switch (type) {
+    case 'chart':
+    case 'line':
+    case 'bar':
+      return <BarChart3 className="h-4 w-4 text-blue-500" />;
+    case 'pie':
+    case 'donut':
+      return <PieChart className="h-4 w-4 text-orange-500" />;
+    case 'metric':
+      return <TrendingUpIcon className="h-4 w-4 text-green-500" />;
+    default:
+      return <BarChart3 className="h-4 w-4 text-gray-500" />;
+  }
+};
 
 export default function ReportsPage() {
   const {
@@ -30,68 +72,6 @@ export default function ReportsPage() {
       success: 'Report refreshed successfully!',
       error: 'Failed to refresh report',
     });
-  };
-
-  const getTrendIcon = (value: string) => {
-    if (value.startsWith('+'))
-      return <TrendingUp className="h-4 w-4 text-green-600" />;
-    if (value.startsWith('-'))
-      return <TrendingDown className="h-4 w-4 text-red-600" />;
-    return <Minus className="h-4 w-4 text-gray-600" />;
-  };
-
-  const renderDataValue = (key: string, value: any): React.ReactNode => {
-    if (Array.isArray(value)) {
-      return (
-        <div className="space-y-2">
-          {value.map((item, index) => (
-            <Card key={index} className="p-3 bg-muted/50">
-              <div className="grid grid-cols-2 gap-2 text-sm">
-                {Object.entries(item).map(([itemKey, itemValue]) => (
-                  <div key={itemKey} className="flex justify-between">
-                    <span className="capitalize text-muted-foreground">
-                      {itemKey}:
-                    </span>
-                    <span className="font-medium">{String(itemValue)}</span>
-                  </div>
-                ))}
-              </div>
-            </Card>
-          ))}
-        </div>
-      );
-    }
-
-    if (
-      typeof value === 'string' &&
-      (value.includes('%') || value.includes('$'))
-    ) {
-      return (
-        <div className="flex items-center gap-2">
-          <span className="text-lg font-semibold">{value}</span>
-          {value.includes('%') &&
-            (value.includes('+') || value.includes('-')) &&
-            getTrendIcon(value)}
-        </div>
-      );
-    }
-
-    if (typeof value === 'object' && value !== null) {
-      return (
-        <div className="space-y-2">
-          {Object.entries(value).map(([subKey, subValue]) => (
-            <div key={subKey} className="flex justify-between items-center">
-              <span className="capitalize text-muted-foreground">
-                {subKey.replace(/([A-Z])/g, ' $1').toLowerCase()}:
-              </span>
-              <span className="font-medium">{String(subValue)}</span>
-            </div>
-          ))}
-        </div>
-      );
-    }
-
-    return <span className="font-medium">{String(value)}</span>;
   };
 
   if (isLoading) {
@@ -129,7 +109,6 @@ export default function ReportsPage() {
       </div>
     );
   }
-
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -151,11 +130,14 @@ export default function ReportsPage() {
             <AccordionItem value={section.id} className="border-none">
               <AccordionTrigger className="px-6 py-4 hover:no-underline">
                 <div className="flex items-center justify-between w-full text-left">
-                  <div>
-                    <h2 className="text-xl font-semibold">{section.title}</h2>
-                    <p className="text-sm text-muted-foreground mt-1">
-                      {section.description}
-                    </p>
+                  <div className="flex items-center gap-3">
+                    {getSectionIcon(section.id)}
+                    <div>
+                      <h2 className="text-xl font-semibold">{section.title}</h2>
+                      <p className="text-sm text-muted-foreground mt-1">
+                        {section.description}
+                      </p>
+                    </div>
                   </div>
                   <Badge variant="secondary" className="ml-4">
                     {section.items.length} items
@@ -172,26 +154,20 @@ export default function ReportsPage() {
                       className="border rounded-lg"
                     >
                       <AccordionTrigger className="px-4 py-3 text-left">
-                        <div className="flex items-center justify-between w-full">
+                        <div className="flex items-center w-full gap-2">
+                          {getTypeIcon(item.type)}
                           <h3 className="font-medium">{item.title}</h3>
-                          <Badge variant="outline" className="ml-2">
-                            {item.type}
-                          </Badge>
                         </div>
                       </AccordionTrigger>
                       <AccordionContent className="px-4 pb-4">
                         <p className="text-sm text-muted-foreground mb-4">
                           {item.description}
                         </p>
-                        <div className="space-y-4">
-                          {Object.entries(item.data).map(([key, value]) => (
-                            <div key={key} className="space-y-2">
-                              <h4 className="text-sm font-medium text-muted-foreground capitalize">
-                                {key.replace(/([A-Z])/g, ' $1').toLowerCase()}
-                              </h4>
-                              {renderDataValue(key, value)}
-                            </div>
-                          ))}
+                        <div className="space-y-6">
+                          <ContentWrapper
+                            contentType={item.id as IdOptions}
+                            value={item.data}
+                          />
                         </div>
                       </AccordionContent>
                     </AccordionItem>
@@ -204,4 +180,41 @@ export default function ReportsPage() {
       </Accordion>
     </div>
   );
+}
+
+type IdOptions =
+  | 'revenue-breakdown'
+  | 'expense-analysis'
+  | 'cash-assets'
+  | 'cash-flow'
+  | 'profitability'
+  | 'financial-kpis'
+  | 'growth-metrics';
+
+type ContentWrapperProps = {
+  contentType: IdOptions;
+  value: any;
+};
+
+function ContentWrapper({ contentType, value }: ContentWrapperProps) {
+  if (
+    contentType === 'revenue-breakdown' ||
+    contentType === 'expense-analysis' ||
+    contentType === 'cash-assets'
+  ) {
+    return <AnalysisTable data={value} />;
+  }
+  if (contentType === 'cash-flow') {
+    return <CashFlow data={value} />;
+  }
+  if (contentType === 'profitability') {
+    return <Profitability data={value} />;
+  }
+  if (contentType === 'financial-kpis') {
+    return <FinancialKPIs data={value} />;
+  }
+  if (contentType === 'growth-metrics') {
+    return <GrowthMetrics data={value} />;
+  }
+  return null;
 }

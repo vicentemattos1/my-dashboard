@@ -17,6 +17,16 @@ const CHART_COLORS = [
   '#ec4899',
 ];
 
+// Updated DashboardData interface to include KPI comparisons
+interface ExtendedDashboardData extends DashboardData {
+  kpiComparisons: {
+    revenue: { value: number; change: number; prefix: string };
+    expenses: { value: number; change: number; prefix: string };
+    grossProfit: { value: number; change: number; prefix: string };
+    netIncome: { value: number; change: number; prefix: string };
+  };
+}
+
 export function useDashboardData() {
   const {
     data: allData,
@@ -50,7 +60,7 @@ export function useDashboardData() {
 
 const transformFinancialData = (
   financialData: FinancialData
-): DashboardData => {
+): ExtendedDashboardData => {
   const { mainDashboard, mainDashboardKPIs } = financialData;
 
   // Calculate total revenue from totalRevenuesSplit
@@ -70,6 +80,20 @@ const transformFinancialData = (
     mainDashboardKPIs.topKPIs.find((kpi) =>
       kpi.name.toLowerCase().includes('cash')
     )?.value || 0;
+
+  // Extract KPI comparisons
+  const revenueKPI = mainDashboardKPIs.KPIs.find(
+    (kpi) => kpi.name === 'Revenues'
+  );
+  const expensesKPI = mainDashboardKPIs.KPIs.find(
+    (kpi) => kpi.name === 'Expenses'
+  );
+  const grossProfitKPI = mainDashboardKPIs.KPIs.find(
+    (kpi) => kpi.name === 'Gross Profit'
+  );
+  const netIncomeKPI = mainDashboardKPIs.KPIs.find(
+    (kpi) => kpi.name === 'Net Income/(Loss)'
+  );
 
   // Transform revenue data for chart
   const chartData = mainDashboard.dateArray.map((date, index) => {
@@ -113,5 +137,27 @@ const transformFinancialData = (
     },
     chartData,
     categories: expenseCategories,
+    kpiComparisons: {
+      revenue: {
+        value: revenueKPI?.value || 0,
+        change: revenueKPI?.mom || 0,
+        prefix: revenueKPI?.prefix || 'MoM',
+      },
+      expenses: {
+        value: Math.abs(expensesKPI?.value || 0),
+        change: expensesKPI?.mom || 0,
+        prefix: expensesKPI?.prefix || 'MoM',
+      },
+      grossProfit: {
+        value: grossProfitKPI?.value || 0,
+        change: grossProfitKPI?.mom || 0,
+        prefix: grossProfitKPI?.prefix || 'MoM',
+      },
+      netIncome: {
+        value: netIncomeKPI?.value || 0,
+        change: netIncomeKPI?.mom || 0,
+        prefix: netIncomeKPI?.prefix || 'MoM',
+      },
+    },
   };
 };

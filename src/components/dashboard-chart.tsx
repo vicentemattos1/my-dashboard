@@ -8,6 +8,7 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
+import { PeriodComparisonIndicator } from '@/components/period-comparison-indicator';
 import {
   BarChart,
   Bar,
@@ -19,6 +20,7 @@ import {
   PieChart,
   Pie,
   Cell,
+  Legend,
 } from 'recharts';
 
 interface ChartData {
@@ -34,6 +36,12 @@ interface CategoryData {
   color: string;
 }
 
+interface KPIComparison {
+  value: number;
+  change: number;
+  prefix: string;
+}
+
 interface DashboardData {
   title: string;
   period: string;
@@ -45,6 +53,12 @@ interface DashboardData {
   };
   chartData: ChartData[];
   categories: CategoryData[];
+  kpiComparisons: {
+    revenue: KPIComparison;
+    expenses: KPIComparison;
+    grossProfit: KPIComparison;
+    netIncome: KPIComparison;
+  };
 }
 
 interface DashboardChartProps {
@@ -112,34 +126,50 @@ export function DashboardChart({ data, isLoading }: DashboardChartProps) {
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <Card>
           <CardHeader className="pb-2">
-            <CardDescription>Total Revenue (K)</CardDescription>
-            <CardTitle className="text-2xl">
-              {data.summary.totalUsers.toLocaleString()}
-            </CardTitle>
-          </CardHeader>
-        </Card>
-        <Card>
-          <CardHeader className="pb-2">
-            <CardDescription>Cash at Bank (K)</CardDescription>
-            <CardTitle className="text-2xl">
-              {data.summary.activeUsers.toLocaleString()}
-            </CardTitle>
-          </CardHeader>
-        </Card>
-        <Card>
-          <CardHeader className="pb-2">
             <CardDescription>Total Revenue</CardDescription>
             <CardTitle className="text-2xl">
-              ${data.summary.revenue.toLocaleString()}
+              ${data.kpiComparisons.revenue.value.toLocaleString()}
             </CardTitle>
+            <PeriodComparisonIndicator
+              value={data.kpiComparisons.revenue.change}
+              prefix={data.kpiComparisons.revenue.prefix}
+            />
           </CardHeader>
         </Card>
         <Card>
           <CardHeader className="pb-2">
-            <CardDescription>Revenue/Expense Ratio</CardDescription>
+            <CardDescription>Total Expenses</CardDescription>
             <CardTitle className="text-2xl">
-              {data.summary.conversionRate}x
+              ${data.kpiComparisons.expenses.value.toLocaleString()}
             </CardTitle>
+            <PeriodComparisonIndicator
+              value={data.kpiComparisons.expenses.change}
+              prefix={data.kpiComparisons.expenses.prefix}
+            />
+          </CardHeader>
+        </Card>
+        <Card>
+          <CardHeader className="pb-2">
+            <CardDescription>Gross Profit</CardDescription>
+            <CardTitle className="text-2xl">
+              ${data.kpiComparisons.grossProfit.value.toLocaleString()}
+            </CardTitle>
+            <PeriodComparisonIndicator
+              value={data.kpiComparisons.grossProfit.change}
+              prefix={data.kpiComparisons.grossProfit.prefix}
+            />
+          </CardHeader>
+        </Card>
+        <Card>
+          <CardHeader className="pb-2">
+            <CardDescription>Net Income</CardDescription>
+            <CardTitle className="text-2xl">
+              ${data.kpiComparisons.netIncome.value.toLocaleString()}
+            </CardTitle>
+            <PeriodComparisonIndicator
+              value={data.kpiComparisons.netIncome.change}
+              prefix={data.kpiComparisons.netIncome.prefix}
+            />
           </CardHeader>
         </Card>
       </div>
@@ -173,12 +203,8 @@ export function DashboardChart({ data, isLoading }: DashboardChartProps) {
                     return [value, name];
                   }}
                 />
-                <Bar dataKey="users" fill="var(--color-chart-1)" name="users" />
-                <Bar
-                  dataKey="conversions"
-                  fill="var(--color-chart-3)"
-                  name="conversions"
-                />
+                <Bar dataKey="users" fill="#3b82f6" name="users" />
+                <Bar dataKey="conversions" fill="#ef4444" name="conversions" />
               </BarChart>
             </ResponsiveContainer>
           </CardContent>
@@ -190,17 +216,17 @@ export function DashboardChart({ data, isLoading }: DashboardChartProps) {
             <CardDescription>Top expense categories breakdown</CardDescription>
           </CardHeader>
           <CardContent>
-            <ResponsiveContainer width="100%" height={300}>
+            <ResponsiveContainer width="100%" height={320}>
               <PieChart>
                 <Pie
                   data={data.categories}
                   cx="50%"
-                  cy="50%"
+                  cy="40%"
                   labelLine={false}
-                  label={({ name, value }) =>
-                    value && value > 0 ? `${name} ${value}%` : null
+                  label={({ value }) =>
+                    value && value > 0 ? `${value}%` : null
                   }
-                  outerRadius={80}
+                  outerRadius={70}
                   fill="#8884d8"
                   dataKey="value"
                 >
@@ -209,6 +235,7 @@ export function DashboardChart({ data, isLoading }: DashboardChartProps) {
                   ))}
                 </Pie>
                 <Tooltip formatter={(value) => [`${value}%`, 'Share']} />
+                <Legend verticalAlign="bottom" height={36} iconType="circle" />
               </PieChart>
             </ResponsiveContainer>
           </CardContent>
