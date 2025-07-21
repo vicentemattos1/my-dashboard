@@ -31,7 +31,7 @@ export default function Home() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex md:items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">
             Dashboard Overview
@@ -49,7 +49,7 @@ export default function Home() {
       <Tabs
         value={activeTab}
         onValueChange={setActiveTab}
-        className="space-y-4"
+        className="space-y-4 bg-red"
       >
         <TabsList className="grid w-full grid-cols-3">
           <TabsTrigger value="monthly">Monthly</TabsTrigger>

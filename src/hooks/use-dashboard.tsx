@@ -63,25 +63,21 @@ const transformFinancialData = (
 ): ExtendedDashboardData => {
   const { mainDashboard, mainDashboardKPIs } = financialData;
 
-  // Calculate total revenue from totalRevenuesSplit
   const totalRevenue = mainDashboard.charts.totalRevenuesSplit.reduce(
     (sum, item) => sum + Math.abs(item.values),
     0
   );
 
-  // Calculate total expenses from expenseSplit (use absolute values)
   const totalExpenses = mainDashboard.charts.expenseSplit.reduce(
     (sum, item) => sum + Math.abs(item.values),
     0
   );
 
-  // Get cash at bank from KPIs
   const cashAtBank =
     mainDashboardKPIs.topKPIs.find((kpi) =>
       kpi.name.toLowerCase().includes('cash')
     )?.value || 0;
 
-  // Extract KPI comparisons
   const revenueKPI = mainDashboardKPIs.KPIs.find(
     (kpi) => kpi.name === 'Revenues'
   );
@@ -95,7 +91,6 @@ const transformFinancialData = (
     (kpi) => kpi.name === 'Net Income/(Loss)'
   );
 
-  // Transform revenue data for chart
   const chartData = mainDashboard.dateArray.map((date, index) => {
     const revenueData = mainDashboard.charts.profitLossOverview.find(
       (item) => item.name === 'Revenues'
@@ -106,20 +101,19 @@ const transformFinancialData = (
 
     return {
       name: date,
-      users: Math.abs(revenueData?.values[index] || 0) / 1000, // Scale down for display
+      users: Math.abs(revenueData?.values[index] || 0) / 1000,
       revenue: Math.abs(revenueData?.values[index] || 0),
       conversions: Math.abs(expenseData?.values[index] || 0),
     };
   });
 
-  // Transform expense split for categories (filter positive values and sort)
   const expenseCategories = mainDashboard.charts.expenseSplit
-    .filter((item) => item.values > 0) // Only positive expenses
-    .sort((a, b) => b.values - a.values) // Sort by value descending
-    .slice(0, 8) // Take top 8 categories
+    .filter((item) => item.values > 0)
+    .sort((a, b) => b.values - a.values)
+    .slice(0, 8)
     .map((item, index) => ({
       name: item.name,
-      value: Math.round((item.values / totalExpenses) * 100), // Convert to percentage
+      value: Math.round((item.values / totalExpenses) * 100),
       color: CHART_COLORS[index % CHART_COLORS.length],
     }));
 
@@ -127,8 +121,8 @@ const transformFinancialData = (
     title: `${mainDashboard.period.charAt(0).toUpperCase() + mainDashboard.period.slice(1)} Financial Dashboard`,
     period: mainDashboard.period,
     summary: {
-      totalUsers: Math.round(totalRevenue / 1000), // Use revenue as "users" metric
-      activeUsers: Math.round(cashAtBank / 1000), // Use cash as "active users"
+      totalUsers: Math.round(totalRevenue / 1000),
+      activeUsers: Math.round(cashAtBank / 1000),
       revenue: totalRevenue,
       conversionRate:
         totalExpenses > 0

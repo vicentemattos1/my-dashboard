@@ -35,7 +35,7 @@ export default function RootLayout({
                   My Analytics Dashboard
                 </h1>
               </div>
-              <div className="p-6">{children}</div>
+              <div className="p-6 max-w-screen">{children}</div>
             </main>
             <Toaster />
           </SidebarProvider>

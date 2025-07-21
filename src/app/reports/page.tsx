@@ -31,13 +31,13 @@ import { GrowthMetrics } from '@/components/growth-metrics';
 const getSectionIcon = (sectionId: string) => {
   switch (sectionId) {
     case 'financial':
-      return <DollarSign className="h-5 w-5 text-green-600" />;
+      return <DollarSign className="min-h-5 min-w-5 text-green-600" />;
     case 'assets':
-      return <Building2 className="h-5 w-5 text-blue-600" />;
+      return <Building2 className="min-h-5 min-w-5 text-blue-600" />;
     case 'kpis':
-      return <Target className="h-5 w-5 text-purple-600" />;
+      return <Target className="min-h-5 min-w-5 text-purple-600" />;
     default:
-      return <BarChart3 className="h-5 w-5 text-gray-600" />;
+      return <BarChart3 className="min-h-5 min-w-5 text-gray-600" />;
   }
 };
 
@@ -110,10 +110,10 @@ export default function ReportsPage() {
     );
   }
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
+    <div className="flex flex-col space-y-6">
+      <div className="flex md:items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">
+          <h1 className="md:text-3xl font-bold tracking-tight">
             {reportData.title}
           </h1>
           <p className="text-muted-foreground">Period: {reportData.period}</p>
@@ -124,22 +124,24 @@ export default function ReportsPage() {
         </Button>
       </div>
 
-      <Accordion type="multiple" className="space-y-4">
+      <Accordion type="multiple" className="space-y-4 w-full">
         {reportData.sections.map((section) => (
-          <Card key={section.id}>
+          <Card key={section.id} className="bg-blue-400/30 border-none">
             <AccordionItem value={section.id} className="border-none">
               <AccordionTrigger className="px-6 py-4 hover:no-underline">
-                <div className="flex items-center justify-between w-full text-left">
-                  <div className="flex items-center gap-3">
+                <div className="flex items-start md:items-center justify-between w-full text-left">
+                  <div className="flex md:items-center gap-3">
                     {getSectionIcon(section.id)}
                     <div>
-                      <h2 className="text-xl font-semibold">{section.title}</h2>
+                      <h2 className="md:text-xl font-semibold">
+                        {section.title}
+                      </h2>
                       <p className="text-sm text-muted-foreground mt-1">
                         {section.description}
                       </p>
                     </div>
                   </div>
-                  <Badge variant="secondary" className="ml-4">
+                  <Badge variant="secondary" className="ml-4 bg-yellow-400">
                     {section.items.length} items
                   </Badge>
                 </div>
@@ -151,7 +153,7 @@ export default function ReportsPage() {
                     <AccordionItem
                       key={item.id}
                       value={item.id}
-                      className="border rounded-lg"
+                      className="border border-muted bg-white-400 rounded-lg"
                     >
                       <AccordionTrigger className="px-4 py-3 text-left">
                         <div className="flex items-center w-full gap-2">

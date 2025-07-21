@@ -58,13 +58,14 @@ export function PeriodComparisonIndicator({
     >
       {showIcon && (
         <>
-          {isPositive && <TrendingUp className="h-3 w-3" />}
-          {isNegative && <TrendingDown className="h-3 w-3" />}
+          {isPositive && <TrendingUp className="min-h-3 min-w-3" />}
+          {isNegative && <TrendingDown className="min-h-3 min-w-3" />}
         </>
       )}
       <span>
         {isPositive && '+'}
-        {formatValue(value)}% {getPeriodLabel(prefix)}
+        {formatValue(value)}%{' '}
+        <span className="hidden md:inline">{getPeriodLabel(prefix)}</span>
       </span>
     </div>
   );

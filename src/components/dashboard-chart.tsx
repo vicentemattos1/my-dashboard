@@ -125,9 +125,9 @@ export function DashboardChart({ data, isLoading }: DashboardChartProps) {
     <div className="space-y-6">
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <Card>
-          <CardHeader className="pb-2">
+          <CardHeader className="px-3 md:px-6 md:pb-2">
             <CardDescription>Total Revenue</CardDescription>
-            <CardTitle className="text-2xl">
+            <CardTitle className="md:text-2xl">
               ${data.kpiComparisons.revenue.value.toLocaleString()}
             </CardTitle>
             <PeriodComparisonIndicator
@@ -139,7 +139,7 @@ export function DashboardChart({ data, isLoading }: DashboardChartProps) {
         <Card>
           <CardHeader className="pb-2">
             <CardDescription>Total Expenses</CardDescription>
-            <CardTitle className="text-2xl">
+            <CardTitle className="md:text-2xl">
               ${data.kpiComparisons.expenses.value.toLocaleString()}
             </CardTitle>
             <PeriodComparisonIndicator
@@ -151,7 +151,7 @@ export function DashboardChart({ data, isLoading }: DashboardChartProps) {
         <Card>
           <CardHeader className="pb-2">
             <CardDescription>Gross Profit</CardDescription>
-            <CardTitle className="text-2xl">
+            <CardTitle className="md:text-2xl">
               ${data.kpiComparisons.grossProfit.value.toLocaleString()}
             </CardTitle>
             <PeriodComparisonIndicator
@@ -163,7 +163,7 @@ export function DashboardChart({ data, isLoading }: DashboardChartProps) {
         <Card>
           <CardHeader className="pb-2">
             <CardDescription>Net Income</CardDescription>
-            <CardTitle className="text-2xl">
+            <CardTitle className="md:text-2xl">
               ${data.kpiComparisons.netIncome.value.toLocaleString()}
             </CardTitle>
             <PeriodComparisonIndicator
@@ -216,7 +216,7 @@ export function DashboardChart({ data, isLoading }: DashboardChartProps) {
             <CardDescription>Top expense categories breakdown</CardDescription>
           </CardHeader>
           <CardContent>
-            <ResponsiveContainer width="100%" height={320}>
+            <ResponsiveContainer width="100%" height={400}>
               <PieChart>
                 <Pie
                   data={data.categories}
@@ -235,7 +235,7 @@ export function DashboardChart({ data, isLoading }: DashboardChartProps) {
                   ))}
                 </Pie>
                 <Tooltip formatter={(value) => [`${value}%`, 'Share']} />
-                <Legend verticalAlign="bottom" height={36} iconType="circle" />
+                <Legend verticalAlign="bottom" height={120} iconType="circle" />
               </PieChart>
             </ResponsiveContainer>
           </CardContent>

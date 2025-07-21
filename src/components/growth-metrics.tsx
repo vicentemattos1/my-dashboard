@@ -42,17 +42,17 @@ export function GrowthMetrics({ data }: GrowthMetricsProps) {
             <div className="flex items-center justify-between">
               <div className="flex-1">
                 <div className="flex items-center gap-3 mb-2">
-                  <h3 className="font-semibold text-lg">{metric.name}</h3>
+                  <h3 className="font-semibold md:text-lg">{metric.name}</h3>
                   <span className="text-xs bg-background px-2 py-1 rounded-full border">
                     {metric.period}
                   </span>
                 </div>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid md:grid-cols-2 gap-4">
                   <div>
                     <p className="text-sm text-muted-foreground mb-1">
                       Current Value
                     </p>
-                    <p className="text-2xl font-bold">
+                    <p className="md:text-2xl font-bold">
                       {formatValue(metric.value, metric.unit)}
                     </p>
                   </div>
@@ -60,7 +60,7 @@ export function GrowthMetrics({ data }: GrowthMetricsProps) {
                     <p className="text-sm text-muted-foreground mb-1">Change</p>
                     <p
                       className={cn(
-                        'text-xl font-bold',
+                        'md:text-xl font-bold',
                         metric.trend === 'up' &&
                           'text-brand-cool dark:text-brand-cool',
                         metric.trend === 'down' &&

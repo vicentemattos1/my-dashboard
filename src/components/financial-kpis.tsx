@@ -31,11 +31,11 @@ export function FinancialKPIs({ data }: FinancialKPIsProps) {
       {data.map((kpi, index) => (
         <Card
           key={`${kpi.name}-${index}`}
-          className="relative py-3 transition-colors hover:bg-brand-light/20"
+          className="relative py-3 transition-colors hover:bg-brand-light/20 gap-0 md:gap-6"
         >
-          <CardHeader className="pb-2 pt-3">
-            <div className="flex items-center justify-between">
-              <CardTitle className="text-xs font-medium text-muted-foreground leading-tight">
+          <CardHeader className="p-2 md:pb-2 md:px-6 md:pt-3">
+            <div className="flex flex-col md:flex-row md:items-center justify-between">
+              <CardTitle className="md:text-sm font-medium text-muted-foreground leading-tight">
                 {kpi.name}
               </CardTitle>
               <Badge variant="outline" className="text-xs px-1.5 py-0.5">
@@ -43,13 +43,13 @@ export function FinancialKPIs({ data }: FinancialKPIsProps) {
               </Badge>
             </div>
           </CardHeader>
-          <CardContent className="pt-0 pb-3">
+          <CardContent className="pt-0 pb-3 px-2 md:px-6">
             <div className="space-y-1.5">
               <div className="text-lg font-bold leading-tight">
                 {formatValue(kpi.value, kpi.unit)}
               </div>
               {kpi.change && (
-                <div className="flex items-center gap-1.5">
+                <div className="flex items-center gap-1.5 break-words">
                   {getTrendIcon(kpi.trend, 'sm')}
                   <span
                     className={cn(

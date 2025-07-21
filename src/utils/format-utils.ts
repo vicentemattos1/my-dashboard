@@ -8,7 +8,7 @@ export const formatValue = (value: number, unit: string) => {
   if (unit === '%') {
     return formatPercentage(value / 100);
   }
-  return `${value.toLocaleString()}${unit}`;
+  return `${value.toLocaleString()} ${unit}`;
 };
 
 export const formatChange = (change: number, unit: string) => {
