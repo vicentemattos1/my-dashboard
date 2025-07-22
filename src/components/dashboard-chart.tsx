@@ -9,32 +9,8 @@ import {
 } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { PeriodComparisonIndicator } from '@/components/period-comparison-indicator';
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-  PieChart,
-  Pie,
-  Cell,
-  Legend,
-} from 'recharts';
-
-interface ChartData {
-  name: string;
-  users: number;
-  revenue: number;
-  conversions: number;
-}
-
-interface CategoryData {
-  name: string;
-  value: number;
-  color: string;
-}
+import { DynamicChart } from '@/components/dynamic-chart';
+import { FinancialData, ChartItem } from '@/app/api/types/dashboard';
 
 interface KPIComparison {
   value: number;
@@ -42,17 +18,10 @@ interface KPIComparison {
   prefix: string;
 }
 
-interface DashboardData {
+interface ExtendedDashboardData {
   title: string;
   period: string;
-  summary: {
-    totalUsers: number;
-    activeUsers: number;
-    revenue: number;
-    conversionRate: number;
-  };
-  chartData: ChartData[];
-  categories: CategoryData[];
+  financialData: FinancialData;
   kpiComparisons: {
     revenue: KPIComparison;
     expenses: KPIComparison;
@@ -62,12 +31,26 @@ interface DashboardData {
 }
 
 interface DashboardChartProps {
-  data: DashboardData | null;
+  data: ExtendedDashboardData | null;
   isLoading: boolean;
 }
 
+// Helper function to format currency values in K format
+const formatCurrencyKPI = (value: number): string => {
+  const absValue = Math.abs(value);
+  if (absValue >= 1000) {
+    const kValue = absValue / 1000;
+    const formattedK = kValue % 1 === 0 ? kValue.toString() : kValue.toFixed(1);
+    return `$${value < 0 ? '-' : ''}${formattedK}K`;
+  }
+  return `$${value}`;
+};
+
 export function DashboardChart({ data, isLoading }: DashboardChartProps) {
-  const period = `${data?.period[0].toUpperCase()}${data?.period.slice(1, data.period.length)}`;
+  const period = data?.period
+    ? `${data.period[0].toUpperCase()}${data.period.slice(1)}`
+    : '';
+
   if (isLoading) {
     return (
       <div className="space-y-6" data-testid="dashboard-loading">
@@ -114,12 +97,15 @@ export function DashboardChart({ data, isLoading }: DashboardChartProps) {
       </div>
     );
   }
-  console.log(data);
+
   if (!data) {
     return (
       <div className="text-center text-muted-foreground">No data available</div>
     );
   }
+
+  const { financialData, kpiComparisons } = data;
+  const { mainDashboard } = financialData;
 
   return (
     <div className="space-y-6">
@@ -128,11 +114,11 @@ export function DashboardChart({ data, isLoading }: DashboardChartProps) {
           <CardHeader className="px-3 md:px-6 md:pb-2">
             <CardDescription>Total Revenue</CardDescription>
             <CardTitle className="md:text-2xl" data-testid="revenue-value">
-              ${data.kpiComparisons.revenue.value.toLocaleString()}
+              {formatCurrencyKPI(kpiComparisons.revenue.value)}
             </CardTitle>
             <PeriodComparisonIndicator
-              value={data.kpiComparisons.revenue.change}
-              prefix={data.kpiComparisons.revenue.prefix}
+              value={kpiComparisons.revenue.change}
+              prefix={kpiComparisons.revenue.prefix}
             />
           </CardHeader>
         </Card>
@@ -140,11 +126,11 @@ export function DashboardChart({ data, isLoading }: DashboardChartProps) {
           <CardHeader className="pb-2">
             <CardDescription>Total Expenses</CardDescription>
             <CardTitle className="md:text-2xl">
-              ${data.kpiComparisons.expenses.value.toLocaleString()}
+              {formatCurrencyKPI(kpiComparisons.expenses.value)}
             </CardTitle>
             <PeriodComparisonIndicator
-              value={data.kpiComparisons.expenses.change}
-              prefix={data.kpiComparisons.expenses.prefix}
+              value={kpiComparisons.expenses.change}
+              prefix={kpiComparisons.expenses.prefix}
             />
           </CardHeader>
         </Card>
@@ -152,11 +138,11 @@ export function DashboardChart({ data, isLoading }: DashboardChartProps) {
           <CardHeader className="pb-2">
             <CardDescription>Gross Profit</CardDescription>
             <CardTitle className="md:text-2xl">
-              ${data.kpiComparisons.grossProfit.value.toLocaleString()}
+              {formatCurrencyKPI(kpiComparisons.grossProfit.value)}
             </CardTitle>
             <PeriodComparisonIndicator
-              value={data.kpiComparisons.grossProfit.change}
-              prefix={data.kpiComparisons.grossProfit.prefix}
+              value={kpiComparisons.grossProfit.change}
+              prefix={kpiComparisons.grossProfit.prefix}
             />
           </CardHeader>
         </Card>
@@ -164,82 +150,153 @@ export function DashboardChart({ data, isLoading }: DashboardChartProps) {
           <CardHeader className="pb-2">
             <CardDescription>Net Income</CardDescription>
             <CardTitle className="md:text-2xl">
-              ${data.kpiComparisons.netIncome.value.toLocaleString()}
+              {formatCurrencyKPI(kpiComparisons.netIncome.value)}
             </CardTitle>
             <PeriodComparisonIndicator
-              value={data.kpiComparisons.netIncome.change}
-              prefix={data.kpiComparisons.netIncome.prefix}
+              value={kpiComparisons.netIncome.change}
+              prefix={kpiComparisons.netIncome.prefix}
             />
           </CardHeader>
         </Card>
       </div>
 
+      {/* Charts Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Card>
-          <CardHeader>
-            <CardTitle>Revenue & Expense Trend</CardTitle>
-            <CardDescription>
-              {period} financial performance overview
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <ResponsiveContainer width="100%" height={300}>
-              <BarChart data={data.chartData}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
-                <YAxis />
-                <Tooltip
-                  formatter={(value, name) => {
-                    const numValue = Number(value);
-                    if (name === 'revenue')
-                      return [`$${numValue.toLocaleString()}`, 'Revenue'];
-                    if (name === 'users')
-                      return [
-                        `$${(numValue * 1000).toLocaleString()}`,
-                        'Revenue (K)',
-                      ];
-                    if (name === 'conversions')
-                      return [`$${numValue.toLocaleString()}`, 'Expenses'];
-                    return [value, name];
-                  }}
-                />
-                <Bar dataKey="users" fill="#3b82f6" name="users" />
-                <Bar dataKey="conversions" fill="#ef4444" name="conversions" />
-              </BarChart>
-            </ResponsiveContainer>
-          </CardContent>
-        </Card>
+        {/* Cash at Bank Chart */}
+        {mainDashboard.charts.cashAtBank.length > 0 && (
+          <Card>
+            <CardHeader>
+              <CardTitle>Cash at Bank</CardTitle>
+              <CardDescription>
+                {period} cash flow and bank account balances
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <DynamicChart
+                data={mainDashboard.charts.cashAtBank}
+                dateArray={mainDashboard.dateArray}
+                title="Cash at Bank"
+                height={300}
+              />
+            </CardContent>
+          </Card>
+        )}
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Expense Category Distribution</CardTitle>
-            <CardDescription>Top expense categories breakdown</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <ResponsiveContainer width="100%" height={400}>
-              <PieChart>
-                <Pie
-                  data={data.categories}
-                  cx="50%"
-                  cy="40%"
-                  labelLine={false}
-                  label={({ value }) =>
-                    value && value > 0 ? `${value}%` : null
-                  }
-                  outerRadius={70}
-                  fill="#8884d8"
-                  dataKey="value"
-                >
-                  {data.categories.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.color} />
-                  ))}
-                </Pie>
-                <Tooltip formatter={(value) => [`${value}%`, 'Share']} />
-                <Legend verticalAlign="bottom" height={120} iconType="circle" />
-              </PieChart>
-            </ResponsiveContainer>
-          </CardContent>
-        </Card>
+        {/* Profit Loss Overview Chart */}
+        {mainDashboard.charts.profitLossOverview.length > 0 && (
+          <Card>
+            <CardHeader>
+              <CardTitle>Profit & Loss Overview</CardTitle>
+              <CardDescription>
+                {period} revenues, expenses, and net income trends
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <DynamicChart
+                data={mainDashboard.charts.profitLossOverview}
+                dateArray={mainDashboard.dateArray}
+                title="Profit & Loss Overview"
+                height={300}
+              />
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Expense Split Chart */}
+        {mainDashboard.charts.expenseSplit.length > 0 && (
+          <Card>
+            <CardHeader>
+              <CardTitle>Expense Category Distribution</CardTitle>
+              <CardDescription>
+                Breakdown of expenses by category
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <DynamicChart
+                data={mainDashboard.charts.expenseSplit}
+                title="Expense Split"
+                height={400}
+              />
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Total Revenues Split Chart */}
+        {mainDashboard.charts.totalRevenuesSplit.length > 0 && (
+          <Card>
+            <CardHeader>
+              <CardTitle>Revenue Sources</CardTitle>
+              <CardDescription>Revenue breakdown by source</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <DynamicChart
+                data={mainDashboard.charts.totalRevenuesSplit}
+                title="Revenue Sources"
+                height={400}
+              />
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Indirect Cashflow Chart */}
+        {mainDashboard.charts.indirectCashflow.some(
+          (item) => item !== null
+        ) && (
+          <Card>
+            <CardHeader>
+              <CardTitle>Cash Flow Operations</CardTitle>
+              <CardDescription>
+                {period} cash flow from operations and investments
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <DynamicChart
+                data={mainDashboard.charts.indirectCashflow.filter(
+                  (item): item is ChartItem => item !== null
+                )}
+                dateArray={mainDashboard.dateArray}
+                title="Cash Flow Operations"
+                height={300}
+              />
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Salaries Split Chart */}
+        {mainDashboard.charts.salariesSplit.length > 0 && (
+          <Card>
+            <CardHeader>
+              <CardTitle>Salary Distribution</CardTitle>
+              <CardDescription>Employee salary breakdown</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <DynamicChart
+                data={mainDashboard.charts.salariesSplit}
+                title="Salary Distribution"
+                height={300}
+              />
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Manpower Operating Expenses Chart */}
+        {mainDashboard.charts.ManpowerOperatingExpenses.length > 0 && (
+          <Card>
+            <CardHeader>
+              <CardTitle>Manpower Operating Expenses</CardTitle>
+              <CardDescription>
+                Operating expenses related to manpower
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <DynamicChart
+                data={mainDashboard.charts.ManpowerOperatingExpenses}
+                title="Manpower Operating Expenses"
+                height={300}
+              />
+            </CardContent>
+          </Card>
+        )}
       </div>
     </div>
   );

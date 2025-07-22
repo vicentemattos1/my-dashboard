@@ -61,7 +61,7 @@ describe('Home Page', () => {
     const { findByTestId, findByText } = renderWithProviders(<Home />);
     const revenue = await findByTestId('revenue-value');
     expect(revenue).toBeInTheDocument();
-    const revenue_value = await findByText('$1,961.25');
+    const revenue_value = await findByText('$2.0K');
     expect(revenue_value).toBeInTheDocument();
   });
 });

@@ -1,20 +1,24 @@
+export type ChartItem = {
+  name: string;
+  values: number | number[];
+  chartType: 'line' | 'pie' | 'donut' | 'bar' | 'columnStacked';
+};
+
 export type FinancialData = {
   mainDashboard: {
     period: string;
+    startDate: string;
+    endDate: string;
+    metricDate: string;
     dateArray: string[];
     charts: {
-      expenseSplit: Array<{
-        name: string;
-        values: number;
-      }>;
-      totalRevenuesSplit: Array<{
-        name: string;
-        values: number;
-      }>;
-      profitLossOverview: Array<{
-        name: string;
-        values: number[];
-      }>;
+      cashAtBank: ChartItem[];
+      expenseSplit: ChartItem[];
+      indirectCashflow: (ChartItem | null)[];
+      totalRevenuesSplit: ChartItem[];
+      profitLossOverview: ChartItem[];
+      salariesSplit: ChartItem[];
+      ManpowerOperatingExpenses: ChartItem[];
     };
   };
   mainDashboardKPIs: {
