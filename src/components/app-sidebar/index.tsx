@@ -15,6 +15,7 @@ import {
   SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import { NavUser } from './nav-user';
+import Link from 'next/link';
 
 const items = [
   {
@@ -57,10 +58,10 @@ export function AppSidebar() {
                     asChild
                     className="hover:bg-brand-light/50 data-[active=true]:bg-brand-warm/20 data-[active=true]:border-l-2 data-[active=true]:border-brand-warm"
                   >
-                    <a href={item.url}>
+                    <Link href={item.url}>
                       <item.icon />
                       <span>{item.title}</span>
-                    </a>
+                    </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}

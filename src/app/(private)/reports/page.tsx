@@ -21,7 +21,7 @@ import {
   TrendingUpIcon,
 } from 'lucide-react';
 import { toast } from 'sonner';
-import { useGetAllReportDataQuery } from '../store/api/reportApi';
+import { useGetAllReportDataQuery } from '@/app/store/api/reportApi';
 import { AnalysisTable } from '@/components/analysis-table';
 import { CashFlow } from '@/components/cash-flow-table';
 import { Profitability } from '@/components/profitability';
