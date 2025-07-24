@@ -1,11 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { baseApi } from './api/baseApi';
+import userReducer from './slices/userSlice';
 
-export function setupStore(
-  preloadedState?: Partial<RootState>
-): ReturnType<typeof configureStore> {
+export function setupStore(preloadedState = {}) {
   return configureStore({
     reducer: {
+      user: userReducer,
       [baseApi.reducerPath]: baseApi.reducer,
     },
     middleware: (getDefaultMiddleware) =>
@@ -17,5 +17,4 @@ export function setupStore(
 export const store = setupStore();
 
 export type RootState = ReturnType<typeof store.getState>;
-export type AppDispatch = typeof store.dispatch;
 export type AppStore = ReturnType<typeof setupStore>;

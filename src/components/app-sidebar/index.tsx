@@ -14,6 +14,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@/components/ui/sidebar';
+import { NavUser } from './nav-user';
 
 const items = [
   {
@@ -69,14 +70,7 @@ export function AppSidebar() {
       </SidebarContent>
 
       <SidebarFooter className="border-t border-sidebar-border/50">
-        <div className="p-2">
-          <div className="text-xs text-muted-foreground text-center">
-            <span className="inline-flex items-center gap-1">
-              <div className="w-2 h-2 rounded-full bg-brand-cool"></div>
-              Enhanced with custom colors
-            </span>
-          </div>
-        </div>
+        <NavUser />
       </SidebarFooter>
     </Sidebar>
   );
