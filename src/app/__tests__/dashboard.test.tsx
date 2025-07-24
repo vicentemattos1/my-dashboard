@@ -2,7 +2,7 @@ import React, { PropsWithChildren } from 'react';
 import { render, RenderOptions } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import { AppStore, RootState, setupStore } from '../store';
-import Home from '../page';
+import Home from '@/app/(private)/page';
 import monthly from '@/data/monthly.json';
 
 const mockUseGetAllDashboardDataQuery = jest.fn();
